@@ -20,6 +20,8 @@ get('/search') do
     @title = Book.find(@id).title()
     @authors = JoinHelper.authors_to_s(JoinHelper.find_authors_by_book_id(@id))
     erb(:book)
+  else
+    erb(:search_fail)
   end
 end
 

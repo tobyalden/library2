@@ -104,4 +104,17 @@ describe('the path to search for books by title') do
     click_button('search')
     expect(page).to have_content('The Hobbit by J.R. Tolkien')
   end
+
+  it('displays a search bar and button that takes the user to a list of search results', {:type => :feature}) do
+    book = Book.new({:title => 'The Hobbit', :id => nil})
+    book.save()
+    author = Author.new({:name => 'J.R. Tolkien', :id => nil})
+    author.save()
+    JoinHelper.add_author_book_pair({:author => author, :book => book})
+    visit('/')
+    fill_in('search_field', :with => 'Lord of the Rings')
+    click_button('search')
+    expect(page).to have_content('No search result found')
+  end
+
 end
