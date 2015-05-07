@@ -33,6 +33,20 @@
 
 <br>
 
+<form action='/patrons' method='post'>
+  <div class='form-group'>
+    <label for="patron_dropdown">Select a Patron</label>
+    <select id='patron_dropdown' name='patron_dropdown' type='text'>
+      <% @patrons.each() do |patron| %>
+      <option value="<%= patron.id()%>"> <%= patron.name() %> </option>
+      <% end %>
+    </select>  
+  </div>
+  <button id='checkout' class='btn-success'>Checkout</button>
+</form>
+
+<br>
+
 <form action='/book/<%= @id %>' method='post'>
   <div class='form-group'>
     <input name="_method" type="hidden" value="delete">

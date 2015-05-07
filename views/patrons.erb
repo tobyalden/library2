@@ -1,0 +1,18 @@
+<h1>Here are all the patrons:</h1>
+
+<ul>
+<% @patrons.each() do |patron| %>
+<li><%= patron.name() %></li>
+<% end %>
+</ul>
+
+<h4>Add a Patron</h4>
+<form action='/patrons' method='post'>
+  <div class='form-group'>
+    <label for='patron_name'>Enter in the name of the patron:</label>
+    <input id='patron_name' name='patron_name' class='form-control' type='text'>
+  </div>
+  <button id='add_patron' class='btn-success'>Add Patron</button>
+</form>
+
+<a href='/'>Home</a>

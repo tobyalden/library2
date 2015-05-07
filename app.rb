@@ -5,6 +5,7 @@ require('./lib/book')
 require('./lib/author')
 require('./lib/joinhelper')
 require('./lib/copy')
+require('./lib/patron')
 also_reload('lib/**/*.rb')
 
 DB = PG.connect({:dbname => 'library'})
@@ -22,6 +23,7 @@ get('/search') do
     @title = Book.find(@id).title()
     @authors = JoinHelper.authors_to_s(JoinHelper.find_authors_by_book_id(@id))
     @number_of_copies = Copy.number_of_copies(@id)
+    @patrons = Patron.all()
     erb(:book)
   elsif found_author_id.!=(nil)
     @books = JoinHelper.find_books_by_author_id(found_author_id)
@@ -57,6 +59,7 @@ get('/book/:id') do
   @title = Book.find(@id).title()
   @authors = JoinHelper.authors_to_s(JoinHelper.find_authors_by_book_id(@id))
   @number_of_copies = Copy.number_of_copies(@id)
+  @patrons = Patron.all()
   erb(:book)
 end
 
@@ -69,6 +72,7 @@ post('/book/:id') do
   JoinHelper.add_author_book_pair({:author => another_author, :book => Book.find(@id)})
   @authors = JoinHelper.authors_to_s(JoinHelper.find_authors_by_book_id(@id))
   @number_of_copies = Copy.number_of_copies(@id)
+  @patrons = Patron.all()
   erb(:book)
 end
 
@@ -82,6 +86,7 @@ post('/add_copies/:id') do
   @title = Book.find(@id).title()
   @authors = JoinHelper.authors_to_s(JoinHelper.find_authors_by_book_id(@id))
   @number_of_copies = Copy.number_of_copies(@id)
+  @patrons = Patron.all()
   erb(:book)
 end
 
@@ -93,6 +98,7 @@ patch('/book/:id') do
   @title = book.title()
   @authors = JoinHelper.authors_to_s(JoinHelper.find_authors_by_book_id(@id))
   @number_of_copies = Copy.number_of_copies(@id)
+  @patrons = Patron.all()
   erb(:book)
 end
 
@@ -102,4 +108,17 @@ delete('/book/:id') do
   book.delete()
   @books = Book.all()
   erb(:books)
+end
+
+get('/patrons') do
+  @patrons = Patron.all()
+  erb(:patrons)
+end
+
+post('/patrons') do
+  patron_name = params.fetch('patron_name')
+  patron = Patron.new({:name => patron_name, :id => nil})
+  patron.save()
+  @patrons = Patron.all()
+  erb(:patrons)
 end
