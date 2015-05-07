@@ -1,0 +1,21 @@
+<h3> <%= @title %> by <%= @author %></h3>
+
+<form action='/book/<%= @id %>' method='post'>
+  <input name="_method" type="hidden" value="patch">
+  <div class='form-group'>
+    <label for='new_title'>Enter new book title:</label>
+    <input id='new_title' name='new_title' class='form-control' type='text'>
+  </div>
+  <button id='update_book' class='btn-success'>Update Book</button>
+</form>
+<br>
+<form action='/book/<%= @id %>' method='post'>
+  <div class='form-group'>
+    <input name="_method" type="hidden" value="delete">
+    <button id='delete_book' class='btn-danger'>Delete Book</button>
+  </div>
+</form>
+
+<a href='/books'>Back to Books List</a>
+<br>
+<a href='/'>Home</a>

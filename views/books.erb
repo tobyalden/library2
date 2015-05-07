@@ -1,0 +1,23 @@
+<h3>Here are all the available books in the library:</h3>
+
+<% if @books.any?() %>
+  <ul>
+    <% @books.each() do |book| %>
+    <li><a href='/book/<%= book.id() %>' id='<%= book.id() %>'><%= book.title() %></a></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>There are no books in this library.</p>
+<% end %>
+
+<form action='/books' method='post'>
+  <div class='form-group'>
+    <label for='title'>Enter book title:</label>
+    <input id='title' name='title' class='form-control' type='text'>
+    <label for='name'>Enter the name of the author:</label>
+    <input id='name' name='name' class='form-control' type='text'>
+  </div>
+  <button id='add_book' class='btn-success'>Add Book</button>
+</form>
+
+<a href='/'>Home</a>
