@@ -40,4 +40,13 @@ describe(JoinHelper) do
       expect(JoinHelper.find_authors_by_book_id(book.id())).to(eq([author]))
     end
   end
+
+  describe('.authors_to_s') do
+    it('returns all the authors for one book as a string') do
+      author1 = Author.new({:name => 'test1', :id => nil})
+      author2 = Author.new({:name => 'test2', :id => nil})
+      author3 = Author.new({:name => 'test3', :id => nil})
+      expect(JoinHelper.authors_to_s([author1, author2, author3])).to(eq("test1, test2, test3"))
+    end
+  end
 end

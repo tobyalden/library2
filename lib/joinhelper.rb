@@ -37,4 +37,12 @@ class JoinHelper
     return authors
   end
 
+  define_singleton_method(:authors_to_s) do |authors|
+    authors_array = []
+    authors.each() do |author|
+      authors_array.push(author.name)
+    end
+    return authors_array.join(', ')
+  end
+
 end

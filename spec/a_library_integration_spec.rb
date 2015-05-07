@@ -75,3 +75,19 @@ describe('the path to delete a book from the library database', {:type => :featu
     expect(page).to have_no_content('The Hobbit')
   end
 end
+
+describe('the path to add another author to an existing book', {:type => :feature}) do
+  it('displays a button to add an author to a book') do
+    book = Book.new({:title => 'The Hobbit', :id => nil})
+    book.save()
+    author = Author.new({:name => 'J.R. Tolkien', :id => nil})
+    author.save()
+    JoinHelper.add_author_book_pair({:author => author, :book => book})
+    visit('/')
+    click_on('See Books')
+    click_on(book.id().to_s())
+    fill_in('another_author', :with => 'test_author')
+    click_button('add_author')
+    expect(page).to have_content('test_author')
+  end
+end

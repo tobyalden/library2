@@ -38,7 +38,18 @@ end
 get('/book/:id') do
   @id = params.fetch('id').to_i()
   @title = Book.find(@id).title()
-  @author = JoinHelper.find_authors_by_book_id(@id).first().name()
+  @authors = JoinHelper.authors_to_s(JoinHelper.find_authors_by_book_id(@id))
+  erb(:book)
+end
+
+post('/book/:id') do
+  @id = params.fetch('id').to_i()
+  @title = Book.find(@id).title()
+  name = params.fetch('another_author')
+  another_author = Author.new({:name => name, :id => nil})
+  another_author.save()
+  JoinHelper.add_author_book_pair({:author => another_author, :book => Book.find(@id)})
+  @authors = JoinHelper.authors_to_s(JoinHelper.find_authors_by_book_id(@id))
   erb(:book)
 end
 
@@ -48,7 +59,7 @@ patch('/book/:id') do
   book = Book.find(@id)
   book.update({:title => new_title})
   @title = book.title()
-  @author = JoinHelper.find_authors_by_book_id(@id).first().name()
+  @authors = JoinHelper.authors_to_s(JoinHelper.find_authors_by_book_id(@id))
   erb(:book)
 end
 
