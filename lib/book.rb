@@ -18,14 +18,28 @@ class Book
 
   define_method(:update) do |attributes|
     @title = attributes[:title]
-    DB.exec("UPDATE books SET title = '#{@title}' WHERE id = #{@id}")
+    DB.exec("UPDATE books SET title = '#{@title}' WHERE id = #{@id};")
   end
-
-
 
   define_method(:delete) do
     DB.exec("DELETE FROM books WHERE id = #{@id};")
+
+    associated_author_book_pairs = DB.exec("SELECT * FROM authors_books WHERE book_id = #{@id}")
+    associated_authors = []
+    associated_author_book_pairs.each() do |author_book_pair|
+      author = Author.find(author_book_pair.fetch("author_id").to_i())
+      associated_authors.push(author)
+    end
+
     DB.exec("DELETE FROM authors_books WHERE book_id = #{@id};")
+
+    associated_authors.each() do |author|
+      remaining_author_book_pairs = DB.exec("SELECT * FROM authors_books WHERE author_id = #{author.id()}")
+      if(remaining_author_book_pairs.values().empty?())
+        author.delete()
+      end
+    end
+
   end
 
   define_singleton_method(:all) do

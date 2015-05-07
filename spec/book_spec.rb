@@ -60,19 +60,18 @@ describe(Book) do
   end
 
   describe('#delete') do
-    it('lets you delete a book in the database') do
+    it('lets you delete a book in the database and keeps the author in the database if they have more books') do
       test_book = Book.new({:title => 'The Hobbit', :id => nil})
       test_book.save()
-      # test_author = Author.new({:name => "J.R. Tolkien", :id => nil})
-      # test_author.save()
-      # JoinHelper.add_author_book_pair({:author => test_author, :book => test_book})
-
+      test_author = Author.new({:name => "J.R. Tolkien", :id => nil})
+      test_author.save()
+      JoinHelper.add_author_book_pair({:author => test_author, :book => test_book})
       test_book2 = Book.new({:title => 'Lord of the Rings', :id => nil})
       test_book2.save()
-      # JoinHelper.add_author_book_pair({:author => test_author, :book => test_book2})
-
+      JoinHelper.add_author_book_pair({:author => test_author, :book => test_book2})
       test_book.delete()
       expect(Book.all()).to(eq([test_book2]))
+      expect(Author.all()).to(eq([test_author]))
     end
   end
 
