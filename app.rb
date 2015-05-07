@@ -68,6 +68,14 @@ post('/book/:id') do
   erb(:book)
 end
 
+post('/add_copies/:id') do
+  @id = params.fetch('id').to_i()
+  number_of_copies = params.fetch('number_of_copies').to_i()
+  number_of_copies.times() do
+    Copy.new({:book_id => @id})
+  end
+end
+
 patch('/book/:id') do
   new_title = params.fetch('new_title')
   @id = params.fetch('id').to_i()

@@ -21,6 +21,16 @@
 
 <br>
 
+<form action='/add_copies/<%= @id %>' method='post'>
+<div class='form-group'>
+  <label for='number_of_copies'>Enter the number of copies to add:</label>
+  <input id='number_of_copies' name='number_of_copies' class='form-control' type='text'>
+</div>
+<button id='add_copies' class='btn-success'>Add Copies</button>
+</form>
+
+<br>
+
 <form action='/book/<%= @id %>' method='post'>
   <div class='form-group'>
     <input name="_method" type="hidden" value="delete">
