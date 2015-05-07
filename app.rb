@@ -12,6 +12,17 @@ get('/') do
   erb(:index)
 end
 
+get('/search') do
+  search_field = params.fetch('search_field')
+  found_book_id = Book.get_id_by_title(search_field)
+  if found_book_id.!=(nil)
+    @id = found_book_id
+    @title = Book.find(@id).title()
+    @authors = JoinHelper.authors_to_s(JoinHelper.find_authors_by_book_id(@id))
+    erb(:book)
+  end
+end
+
 get('/books') do
   @books = Book.all()
   erb(:books)
@@ -28,9 +39,7 @@ post('/books') do
   title = params.fetch('title')
   book = Book.new({:title => title, :id => nil})
   book.save()
-
   JoinHelper.add_author_book_pair({:author => Author.find(author_id), :book => book})
-
   @books = Book.all()
   erb(:books)
 end

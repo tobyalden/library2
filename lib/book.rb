@@ -63,4 +63,12 @@ class Book
     return nil
   end
 
+  define_singleton_method(:get_id_by_title) do |search_title|
+    returned_book_id = DB.exec("SELECT id FROM books WHERE title = '#{search_title}';")
+    if !returned_book_id.values().empty?()
+      return returned_book_id.first().fetch('id').to_i()
+    end
+    return nil
+  end
+
 end

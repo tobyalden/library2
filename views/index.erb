@@ -1,3 +1,12 @@
 <h1>Library</h1>
 
 <a href='/books'>See Books</a>
+
+<h4>Search</h4>
+<form action='/search' method='get'>
+  <div class='form-group'>
+    <label for='search_field'>Enter an author or book title to search by:</label>
+    <input id='search_field' name='search_field' class='form-control' type='text'>
+  </div>
+  <button id='search' class='btn-success'>Search</button>
+</form>

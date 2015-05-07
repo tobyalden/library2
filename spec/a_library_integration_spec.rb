@@ -91,3 +91,17 @@ describe('the path to add another author to an existing book', {:type => :featur
     expect(page).to have_content('test_author')
   end
 end
+
+describe('the path to search for books by title') do
+  it('displays a search bar and button that takes the user to a list of search results', {:type => :feature}) do
+    book = Book.new({:title => 'The Hobbit', :id => nil})
+    book.save()
+    author = Author.new({:name => 'J.R. Tolkien', :id => nil})
+    author.save()
+    JoinHelper.add_author_book_pair({:author => author, :book => book})
+    visit('/')
+    fill_in('search_field', :with => 'The Hobbit')
+    click_button('search')
+    expect(page).to have_content('The Hobbit by J.R. Tolkien')
+  end
+end
