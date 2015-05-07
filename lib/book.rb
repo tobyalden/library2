@@ -40,6 +40,8 @@ class Book
       end
     end
 
+    DB.exec("DELETE FROM copies WHERE book_id = #{@id}")
+
   end
 
   define_singleton_method(:all) do

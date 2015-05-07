@@ -1,5 +1,7 @@
 <h3> <%= @title %> by <%= @authors %></h3>
 
+<h4>Copies available: <%= @number_of_copies %></h4>
+
 <form action='/book/<%= @id %>' method='post'>
   <input name="_method" type="hidden" value="patch">
   <div class='form-group'>

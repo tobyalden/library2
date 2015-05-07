@@ -31,6 +31,19 @@ describe('the path to add a new book to the library', {:type => :feature}) do
   end
 end
 
+describe('the path to add copies of a book to the library', {:type => :feature}) do
+  it('displays a form for the user to enter a number of copies to add to the library') do
+    book = Book.new({:title => 'The Hobbit', :id => nil})
+    book.save()
+    visit('/')
+    click_on('See Books')
+    click_on(book.id().to_s())
+    fill_in('number_of_copies', :with => '8')
+    click_on('add_copies')
+    expect(page).to(have_content('8'))
+  end
+end
+
 describe('the path to display the information of a book', {:type => :feature}) do
   it('displays a list of book links leading to that books information') do
     book = Book.new({:title => 'The Hobbit', :id => nil})

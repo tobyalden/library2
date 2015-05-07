@@ -37,4 +37,14 @@ class Copy
     return nil
   end
 
+  define_singleton_method(:number_of_copies) do |book_id|
+    copy_count = 0
+    all().each() do |copy|
+      if(copy.book_id() == book_id)
+        copy_count += 1
+      end
+    end
+    return copy_count
+  end
+
 end

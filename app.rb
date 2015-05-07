@@ -4,6 +4,7 @@ require('sinatra/reloader')
 require('./lib/book')
 require('./lib/author')
 require('./lib/joinhelper')
+require('./lib/copy')
 also_reload('lib/**/*.rb')
 
 DB = PG.connect({:dbname => 'library'})
@@ -20,6 +21,7 @@ get('/search') do
     @id = found_book_id
     @title = Book.find(@id).title()
     @authors = JoinHelper.authors_to_s(JoinHelper.find_authors_by_book_id(@id))
+    @number_of_copies = Copy.number_of_copies(@id)
     erb(:book)
   elsif found_author_id.!=(nil)
     @books = JoinHelper.find_books_by_author_id(found_author_id)
@@ -54,6 +56,7 @@ get('/book/:id') do
   @id = params.fetch('id').to_i()
   @title = Book.find(@id).title()
   @authors = JoinHelper.authors_to_s(JoinHelper.find_authors_by_book_id(@id))
+  @number_of_copies = Copy.number_of_copies(@id)
   erb(:book)
 end
 
@@ -65,15 +68,21 @@ post('/book/:id') do
   another_author.save()
   JoinHelper.add_author_book_pair({:author => another_author, :book => Book.find(@id)})
   @authors = JoinHelper.authors_to_s(JoinHelper.find_authors_by_book_id(@id))
+  @number_of_copies = Copy.number_of_copies(@id)
   erb(:book)
 end
 
 post('/add_copies/:id') do
   @id = params.fetch('id').to_i()
-  number_of_copies = params.fetch('number_of_copies').to_i()
-  number_of_copies.times() do
-    Copy.new({:book_id => @id})
+  number_of_copies_to_add = params.fetch('number_of_copies').to_i()
+  number_of_copies_to_add.times() do
+    copy = Copy.new({:book_id => @id})
+    copy.save()
   end
+  @title = Book.find(@id).title()
+  @authors = JoinHelper.authors_to_s(JoinHelper.find_authors_by_book_id(@id))
+  @number_of_copies = Copy.number_of_copies(@id)
+  erb(:book)
 end
 
 patch('/book/:id') do
@@ -83,6 +92,7 @@ patch('/book/:id') do
   book.update({:title => new_title})
   @title = book.title()
   @authors = JoinHelper.authors_to_s(JoinHelper.find_authors_by_book_id(@id))
+  @number_of_copies = Copy.number_of_copies(@id)
   erb(:book)
 end
 

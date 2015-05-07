@@ -39,4 +39,15 @@ describe('Copy') do
     end
   end
 
+  describe('.number_of_copies') do
+    it('returns the number of copies of a book in the database') do
+      test_copy = Copy.new({:book_id => 1, :id => nil})
+      test_copy.save()
+      test_copy = Copy.new({:book_id => 1, :id => nil})
+      test_copy.save()
+      test_copy = Copy.new({:book_id => 1, :id => nil})
+      test_copy.save()
+      expect(Copy.number_of_copies(1)).to(eq(3))
+    end
+  end
 end
