@@ -44,4 +44,12 @@ describe('Copy') do
     end
   end
 
+  describe('.find') do
+    it('returns a copy based on the copy id') do
+      test_copy = Copy.new({:copy_number => 2, :book_id => 1, :due_date => '2015-03-01 00:00:00', :id => nil})
+      test_copy.save()
+      expect(Copy.find(test_copy.id())).to(eq(test_copy))
+    end
+  end
+
 end

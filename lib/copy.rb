@@ -31,4 +31,16 @@ class Copy
     copies
   end
 
+  define_singleton_method(:find) do |search_id|
+    returned_copy = DB.exec("SELECT * FROM copies WHERE id = #{search_id};")
+    if !returned_copy.values().empty?()
+      book_id = returned_copy.first().fetch('book_id').to_i()
+      copy_number = returned_copy.first.fetch('copy_number').to_i()
+      due_date = returned_copy.first.fetch('due_date')
+      id = returned_copy.first().fetch('id').to_i()
+      return Copy.new({:book_id => book_id, :copy_number => copy_number, :due_date => due_date, :id => id})
+    end
+    return nil
+  end
+
 end
