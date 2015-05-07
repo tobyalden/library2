@@ -29,4 +29,19 @@ describe('Copy') do
     end
   end
 
+  describe('.all') do
+    it('returns all the copies saved in the database') do
+      test_copy = Copy.new({:copy_number => 2, :book_id => 1, :due_date => '2015-03-01', :id => nil})
+      expect(Copy.all()).to(eq([]))
+    end
+  end
+
+  describe('#save') do
+    it('saves a copy to the database') do
+      test_copy = Copy.new({:copy_number => 2, :book_id => 1, :due_date => '2015-03-01 00:00:00', :id => nil})
+      test_copy.save()
+      expect(Copy.all()).to(eq([test_copy]))
+    end
+  end
+
 end
