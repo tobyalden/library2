@@ -73,4 +73,16 @@ class Book
     return nil
   end
 
+  define_singleton_method(:get_available_copy) do |book_id|
+    returned_copy_ids = DB.exec("SELECT id FROM copies WHERE book_id = #{book_id};")
+    returned_copy_id.each() do |returned_copy_id|
+      copy_id = returned_copy_id.first().fetch("id").to_i()
+      returned_copy = DB.exec("SELECT * FROM checkouts WHERE copy_id = #{copy_id};")
+      if !returned_copy.values().empty?()
+        return copy_id
+      end
+    end
+    return nil
+  end
+
 end

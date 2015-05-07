@@ -45,4 +45,14 @@ class JoinHelper
     return authors_array.join(', ')
   end
 
+  define_singleton_method(:checkout) do |attributes|
+    patron_name = attributes[:patron_name]
+    book_id = attributes[:book_id]
+    patron_id = Patron.get_id_by_name(patron_name)
+    copy_id = Book.find(book_id).get_available_copy()
+    if copy_id.!=(nil) do
+      # DB.exec("INSERT INTO checkouts (patron_id, copy_id) VALUES (#{patron_id}, #{copy_id});")
+    end
+  end
+
 end

@@ -122,3 +122,14 @@ post('/patrons') do
   @patrons = Patron.all()
   erb(:patrons)
 end
+
+get('/checkout/:id') do
+  @id = params.fetch('id')
+  patron_name = params.fetch('patron_dropdown')
+  JoinHelper.checkout({:book_id => @id, :patron_name => patron_name})
+  @title = Book.find(@id).title()
+  @authors = JoinHelper.authors_to_s(JoinHelper.find_authors_by_book_id(@id))
+  @number_of_copies = Copy.number_of_copies(@id)
+  @patrons = Patron.all()
+  erb(:book)
+end
