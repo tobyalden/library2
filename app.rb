@@ -18,16 +18,18 @@ get('/books') do
 end
 
 post('/books') do
-
   name = params.fetch('name')
-  author = Author.new({:name => name, :id => nil})
-  author.save()
-
+  author_id = Author.get_id_by_name(name)
+  if author_id.==(nil)
+    author = Author.new({:name => name, :id => nil})
+    author.save()
+    author_id = author.id()
+  end
   title = params.fetch('title')
-  book = Book.new({:title => title, :author => author})
+  book = Book.new({:title => title, :id => nil})
   book.save()
 
-  JoinHelper.add_author_book_pair({:author => author, :book => book})
+  JoinHelper.add_author_book_pair({:author => Author.find(author_id), :book => book})
 
   @books = Book.all()
   erb(:books)
