@@ -15,11 +15,15 @@ end
 get('/search') do
   search_field = params.fetch('search_field')
   found_book_id = Book.get_id_by_title(search_field)
+  found_author_id = Author.get_id_by_name(search_field)
   if found_book_id.!=(nil)
     @id = found_book_id
     @title = Book.find(@id).title()
     @authors = JoinHelper.authors_to_s(JoinHelper.find_authors_by_book_id(@id))
     erb(:book)
+  elsif found_author_id.!=(nil)
+    @books = JoinHelper.find_books_by_author_id(found_author_id)
+    erb(:search_results)
   else
     erb(:search_fail)
   end
