@@ -41,4 +41,12 @@ class Author
     return nil
   end
 
+  define_singleton_method(:get_id_by_name) do |author_name|
+    returned_author_id = DB.exec("SELECT id FROM authors WHERE name = '#{author_name}';")
+    if !returned_author_id.values().empty?()
+      return returned_author_id.first().fetch('id').to_i()
+    end
+    return nil
+  end
+
 end

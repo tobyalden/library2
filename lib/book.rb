@@ -5,7 +5,6 @@ class Book
   define_method(:initialize) do |attributes|
     @title = attributes[:title]
     @id = attributes[:id]
-    @author = attributes[:author]
   end
 
   define_method(:==) do |other_book|
@@ -26,6 +25,7 @@ class Book
 
   define_method(:delete) do
     DB.exec("DELETE FROM books WHERE id = #{@id};")
+    DB.exec("DELETE FROM authors_books WHERE book_id = #{@id};")
   end
 
   define_singleton_method(:all) do

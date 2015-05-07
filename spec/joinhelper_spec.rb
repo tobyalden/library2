@@ -40,5 +40,4 @@ describe(JoinHelper) do
       expect(JoinHelper.find_authors_by_book_id(book.id())).to(eq([author]))
     end
   end
-
 end

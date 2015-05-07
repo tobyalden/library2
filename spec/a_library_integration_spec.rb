@@ -25,6 +25,7 @@ describe('the path to add a new book to the library', {:type => :feature}) do
     visit('/')
     click_on('See Books')
     fill_in('title', :with => 'The Hobbit')
+    fill_in('name', :with => 'J.R. Tolkien')
     click_button('add_book')
     expect(page).to have_content('The Hobbit')
   end

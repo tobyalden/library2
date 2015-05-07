@@ -61,4 +61,14 @@ describe(Author) do
     end
   end
 
+  describe('.get_id_by_name') do
+    it('returns nil if the given author does not exist in the database') do
+      expect(Author.get_id_by_name('J.R. Tolkien')).to(eq(nil))
+    end
+    it('returns the id of an author given their name') do
+      test_author = Author.new({:name => 'J.R. Tolkien', :id => nil})
+      test_author.save()
+      expect(Author.get_id_by_name(test_author.name())).to(eq(test_author.id()))
+    end
+  end
 end

@@ -18,6 +18,7 @@ get('/books') do
 end
 
 post('/books') do
+
   name = params.fetch('name')
   author = Author.new({:name => name, :id => nil})
   author.save()
