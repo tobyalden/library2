@@ -73,6 +73,17 @@ describe(Book) do
       expect(Book.all()).to(eq([test_book2]))
       expect(Author.all()).to(eq([test_author]))
     end
+
+    it('lets you delete a book in the database and deletes the author in the database if they do not have anymore books') do
+      test_book = Book.new({:title => 'The Hobbit', :id => nil})
+      test_book.save()
+      test_author = Author.new({:name => "J.R. Tolkien", :id => nil})
+      test_author.save()
+      JoinHelper.add_author_book_pair({:author => test_author, :book => test_book})
+      test_book.delete()
+      expect(Book.all()).to(eq([]))
+      expect(Author.all()).to(eq([]))      
+    end
   end
 
 end
